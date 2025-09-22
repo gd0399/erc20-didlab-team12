@@ -1,57 +1,143 @@
-# Sample Hardhat 3 Beta Project (`node:test` and `viem`)
+# ERC20 DIDLab Project
 
-This project showcases a Hardhat 3 Beta project using the native Node.js test runner (`node:test`) and the `viem` library for Ethereum interactions.
+## Overview
+This project demonstrates the deployment and interaction with an ERC20 token smart contract.  
+It covers compiling contracts, deploying them, executing transfers and approvals, comparing gas usage for single vs batch transfers, and querying logs/events.  
+Integration with **MetaMask** is also included for account management and token transfers.
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+---
 
-## Project Overview
+## Environment Setup
 
-This example project includes:
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-url>
+   cd erc20-didlab
+   ```
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using [`node:test`](nodejs.org/api/test.html), the new Node.js native test runner, and [`viem`](https://viem.sh/).
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Usage
+3. Configure your environment variables in a `.env` file:
+   ```env
+   RPC_URL=http://hh-12.didlabs.org
+   CHAIN_ID=31348
+   PRIVATE_KEY=your_private_key_here
+   TOKEN_ADDRESS=your_token_contract_address_here
+   ```
 
-### Running Tests
+---
 
-To run all the tests in the project, execute the following command:
+## Running Scripts
 
-```shell
-npx hardhat test
+### 1. Compile the contracts
+```bash
+npx hardhat compile
 ```
+✅ Confirms Solidity contract compilation.  
+(Screenshot: `compile_success.png`)
 
-You can also selectively run the Solidity or `node:test` tests:
+---
 
-```shell
-npx hardhat test solidity
-npx hardhat test nodejs
+### 2. List accounts
+```bash
+npx hardhat accounts
 ```
+✅ Displays the faucet accounts with preloaded ETH.  
+(Screenshot: `hardhat_accounts.png`)
 
-### Make a deployment to Sepolia
+---
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
-
-To run the deployment to a local chain:
-
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
+### 3. Deploy the contract
+```bash
+node scripts/deploy.mjs
 ```
+✅ Deploys the ERC20 contract and outputs the deployed address.  
+(Screenshot: `deploy_contract.png`)
 
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
+---
 
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
+### 4. Transfer & Approve Tokens
+```bash
+node scripts/transferApprove.mjs
 ```
+✅ Executes a transfer and an approval transaction.  
+(Screenshot: `transfer_approve.png`)
 
-After setting the variable, you can run the deployment with the Sepolia network:
+---
 
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
+### 5. Batch vs Single Transfers
+```bash
+node scripts/batchVsSingle.mjs
 ```
+✅ Compares gas used for multiple single transfers vs a batch transfer.  
+(Screenshot: `batch_vs_single.png`)
+
+---
+
+### 6. Logs & Events
+```bash
+node scripts/logsEvents.mjs
+```
+✅ Queries recent `Transfer` and `Approval` events.  
+(Screenshot: `logs_events.png`)
+
+---
+
+### 7. Gas Analysis (Transactions)
+```bash
+node scripts/transactionsGas.mjs
+```
+✅ Shows transaction details, gas used, and block confirmations.  
+(Screenshot: `transactions_gas.png`)
+
+---
+
+## MetaMask Configuration
+
+1. Open **MetaMask** → **Networks** → **Add Network**.  
+2. Enter the details:  
+   - **Network Name**: DIDLab Team 12  
+   - **RPC URL**: `http://hh-12.didlabs.org`  
+   - **Chain ID**: `31348`  
+   - **Currency Symbol**: `ETH`
+
+(Screenshot: `metamask_add_network.png`)  
+(Screenshot: `metamask_network_connected.png`)
+
+3. Import your faucet account using **Private Key**.  
+4. Import your token using the deployed **TOKEN_ADDRESS**.
+
+---
+
+## Project Parameters
+
+- **RPC URL**: `http://hh-12.didlabs.org`  
+- **Chain ID**: `31348`  
+- **Token Address**: `0x850ec3780cedfdb116e38b009dbf7a1ef1b8b38`  
+
+---
+
+## Deliverables; these are the files i have delivered
+
+- Scripts for:
+  - Deployment
+  - Transfers and approvals
+  - Batch vs single transfer comparison
+  - Logs & events query
+- Screenshots:
+  - `compile_success.png`
+  - `compile_confirm.png`
+  - `hardhat_accounts.png`
+  - `deploy_contract.png`
+  - `transfer_approve.png`
+  - `batch_vs_single.png`
+  - `logs_events.png`
+  - `transactions_gas.png`
+  - `metamask_add_network.png`
+  - `metamask_network_connected.png`
+
+---
+
